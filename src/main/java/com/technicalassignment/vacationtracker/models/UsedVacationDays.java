@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity(name = "Used_vacation_days")
+@Entity(name = "UsedVacationDays")
 public class UsedVacationDays {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
