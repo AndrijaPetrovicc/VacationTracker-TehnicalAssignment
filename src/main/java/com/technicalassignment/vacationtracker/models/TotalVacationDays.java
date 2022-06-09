@@ -17,6 +17,12 @@ public class TotalVacationDays {
     public TotalVacationDays(){
     }
 
+    public TotalVacationDays(Long employee_id, int vacation_year, int total_vacation_days) {
+        this.employee_id = employee_id;
+        this.vacation_year = vacation_year;
+        this.total_vacation_days = total_vacation_days;
+    }
+
     public Long getId() {
         return id;
     }

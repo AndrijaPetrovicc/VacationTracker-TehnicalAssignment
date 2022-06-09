@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name = "UsedVacationDays")
@@ -16,6 +17,12 @@ public class UsedVacationDays {
     private Date end_date;
 
     public UsedVacationDays(){
+    }
+
+    public UsedVacationDays(Long employee_id, Date start_date, Date end_date) {
+        this.employee_id = employee_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     public Long getId() {

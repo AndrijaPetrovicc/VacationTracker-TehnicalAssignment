@@ -1,9 +1,6 @@
 package com.technicalassignment.vacationtracker.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "Employee")
@@ -11,12 +8,17 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email_address;
     private String password;
 
     public Employee(){
     }
 
+    public Employee(String email_address, String password) {
+        this.email_address = email_address;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
