@@ -9,20 +9,27 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.technicalassignment.vacationtracker.controllers.AdminController;
 import com.technicalassignment.vacationtracker.models.TotalVacationDays;
+import com.technicalassignment.vacationtracker.repositories.EmployeeRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.technicalassignment.vacationtracker.models.Employee;
 import com.technicalassignment.vacationtracker.models.UsedVacationDays;
 import com.technicalassignment.vacationtracker.services.EmployeeService;
 import java.text.SimpleDateFormat;
 //In the CSVHelper class, methods were created for loading data from csv files into the appropriate data lists
+@Component
 public class CSVHelper {
+    @Autowired
+    EmployeeRepository employeeRepository;
     public static String TYPE = "text/csv";
     //hasCSVFormat is a method that checks if a file is in the correct format
-    public boolean hasCSVFormat(MultipartFile file) {
+    public static boolean hasCSVFormat(MultipartFile file) {
         if(!TYPE.equals(file.getContentType())){
             return false;
         }
@@ -44,7 +51,7 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             //Creating instances of employees via a parameter constructor with data from the CSV file, adding them to the list
             for (CSVRecord csvRecord : csvRecords){
-                Employee employee = new Employee(csvRecord.get("Employee Email"),csvRecord.get("Employee Password"));
+                Employee employee = new Employee(csvRecord.get("Employee Email"),csvRecord.get("Employee Password"),true,"ROLE_EMPLOYEE");
                 employees.add(employee);
             }
             return employees;
@@ -56,8 +63,9 @@ public class CSVHelper {
     }
 
     public static List<UsedVacationDays> csvToUsedVacationDates(InputStream is) throws IOException {
-        EmployeeService employeeService = new EmployeeService();
+        AdminController adminController = new AdminController();
         //Creating a date formatter
+        System.out.println("Creating a date formatter");
         SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(is,"UTF-8"));
         CSVFormat format = CSVFormat.Builder.create(CSVFormat.DEFAULT).setHeader().setSkipHeaderRecord(true).build();
@@ -67,16 +75,22 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords){
                 //Since we can only access the email address of employees via the CSV file and we need an id, we use a method that returns the id using the email address
-                UsedVacationDays usedVacationDays = new UsedVacationDays(employeeService.getEmployeeIdByEmail(csvRecord.get("Employee")), (Date) formatter.parse(csvRecord.get("Vacation start date")),(Date) formatter.parse(csvRecord.get("Vacation start date")));
-                usedVacationDaysList.add(usedVacationDays);
+               UsedVacationDays usedVacationDays = new UsedVacationDays(Long.parseLong("1"), (Date) formatter.parse(csvRecord.get("Vacation start date")),(Date) formatter.parse(csvRecord.get("Vacation start date")));
+               usedVacationDaysList.add(usedVacationDays);
             }
             return usedVacationDaysList;
         }
         catch (IOException e) {
+            System.out.println("fail to parse CSV file");
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         } catch (ParseException e) {
+            System.out.println("wrong date format");
+            throw new RuntimeException("wrong date format: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("GRESKA" + e.getMessage() );
             throw new RuntimeException("wrong date format: " + e.getMessage());
         }
+
 
     }
 
@@ -92,8 +106,8 @@ public class CSVHelper {
             List<TotalVacationDays> totalVacationDaysList = new ArrayList<TotalVacationDays>();
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords){
-                TotalVacationDays totalVacationDays = new TotalVacationDays(employeeService.getEmployeeIdByEmail(csvRecord.get("Employee")),Integer.parseInt(year),Integer.parseInt(csvRecord.get("Total vacation days")));
-                totalVacationDaysList.add(totalVacationDays);
+                //TotalVacationDays totalVacationDays = new TotalVacationDays(employeeService.getEmployeeIdByEmail(csvRecord.get("Employee")),Integer.parseInt(year),Integer.parseInt(csvRecord.get("Total vacation days")));
+              //  totalVacationDaysList.add(totalVacationDays);
             }
             return totalVacationDaysList;
         }

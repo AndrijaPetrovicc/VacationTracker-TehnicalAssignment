@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 //The Service annotation tells Spring that this is a service class
 @Service
@@ -23,8 +24,5 @@ public class EmployeeService {
             throw new RuntimeException("fail to store csv data: " + e.getMessage());
         }
     }
-    //getEmployeeIdByEmail method as a parameter receives a string that should represent the email address of the employee and based on that address returns the employee ID
-    public Long getEmployeeIdByEmail(String email){
-        return employeeRepository.findByEmail(email).getId();
-    }
+
 }

@@ -1,23 +1,46 @@
 package com.technicalassignment.vacationtracker.models;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity(name = "Employee")
+@Entity(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(unique = true)
-    private String email_address;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "active")
+    private boolean active;
+    @Column(name = "roles")
+    private String roles;
 
     public Employee(){
     }
 
-    public Employee(String email_address, String password) {
-        this.email_address = email_address;
+    public Employee(String email, String password, boolean active, String roles) {
+        this.roles = roles;
+        this.active = active;
+        this.email = email;
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -28,12 +51,12 @@ public class Employee {
         this.id = id;
     }
 
-    public String getEmail_address() {
-        return email_address;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmail_address(String email_address) {
-        this.email_address = email_address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

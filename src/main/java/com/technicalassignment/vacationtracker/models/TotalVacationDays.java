@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "TotalVacationDays")
+@Entity(name = "total_vacation_days")
 public class TotalVacationDays {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

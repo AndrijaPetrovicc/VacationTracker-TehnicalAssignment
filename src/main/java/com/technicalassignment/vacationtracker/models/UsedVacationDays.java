@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Entity(name = "UsedVacationDays")
+@Entity(name = "used_vacation_days")
 public class UsedVacationDays {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
